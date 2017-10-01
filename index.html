@@ -1,0 +1,3073 @@
+<html>
+	<head>
+		<title>
+			Gallery Scrolling	
+		</title>
+		<script src="js/jquery-3.2.1.min.js"></script>
+		
+		
+		
+		<!--<script src="js/jquery.longclick.js"></script>-->
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+		<link href="https://fonts.googleapis.com/css?family=Raleway:200" rel="stylesheet">
+	</head>
+	<style>
+		/*body{
+		  cursor: url('path-to-image.png'), auto;	
+		}*/
+		.container
+		{
+			position:absolute;
+			width:31.5vh;
+			height:60vh;
+			left:50%;
+			top:50%;
+			transform:translate(-50%, -50%); 
+
+		}
+		.main.container{
+			overflow: hidden;
+			height: 46vh;
+			top:50vh;
+		}
+		.temp.container{
+			overflow: visible;
+			height:50vh;
+		}
+		#back{
+			background:url('phone.png');
+			background-size: contain;
+			background-repeat: no-repeat;
+		}
+		#back{
+			background:url('phone.png');
+			background-size: contain;
+			background-repeat: no-repeat;
+		}
+		#motog3{
+			background:url('motog3.png');
+			background-size: contain;
+			background-repeat: no-repeat;
+		}
+		#base{
+			background:url('bottom.png');
+			background-size: contain;
+			background-repeat: no-repeat;
+			transition:opacity 0.4s 0.8s ease-in-out;
+			top:42.5vh;
+			height:4vh;
+		}
+		#head{
+			background:url('head.png');
+			background-size: contain;
+			background-repeat: no-repeat;
+			
+			height:5vh;
+			transition:opacity 0.3s 0.7s ease-in-out;
+		}
+		.title{
+			position: absolute;
+			left:50%;
+			top: 10vh;
+			font-size: 3vh;
+			transform:translate(-50%,-50%);
+			font-family: 'Raleway', sans-serif;
+		}
+		.container-screen{
+			position: absolute;
+			width:26.4vh;
+			left:50%;
+			transform:translateX(-50%); 
+		}
+		#area{
+			position: absolute;
+			background: white;
+			height: 41vh;
+			top:4vh;
+			overflow-y: scroll;
+		}
+		#area::-webkit-scrollbar { 
+		    display: none; 
+		    width:0;
+		}
+		.left, .right{
+			width:calc(50% - 0.35px);
+			display: inline-block;
+			height: 9vh;
+			margin:-0.95px; 
+		}
+		.left{
+			left: 0;
+		}
+		.right{
+			right: 0;
+		}
+		#area>#one{
+			background:#FF8A65; }
+		#area>#two{
+			background:#9E9E9E; }
+		#area>#three{
+			background:#BA68C8; }
+		#area>#four{
+			background:#2196F3; }
+		#area>#five{
+			background:#009688; }
+		#area>#six{
+			background:#4CAF50; }
+		#area>#seven{
+			background:#CDDC39; }
+		#area>#eight{
+			background:#607D8B; }
+		#area>#nine{
+			background:#FFC107; }
+		#area>#ten{
+			background:#FF9800; }
+
+		.date{
+			width: 6vh;
+			height: 6vh;
+			border-radius: 50%;
+			background: rgba(117, 116, 116, 0.90);
+			position: absolute;
+			left: 12.75vh;
+			top:30vh;
+			visibility: hidden;
+			opacity: 0;
+			box-shadow: 0px 0 18px 4px rgba(0, 0, 0, 0.22);
+			transition:background 0.2s ease-in-out, box-shadow 0.2s ease-in-out,opacity 0.2s ease-in-out, visibility 0.5s ease-in-out;
+		}
+		.date:hover{
+			background:rgba(117, 116, 116, 1); 
+			box-shadow: 0px 0 25px 8px rgba(0, 0, 0, 0.22);
+		}
+		.timeline{
+			width:0.25vh;
+			height:24vh;
+			background: rgba(50,50,50,0.95);
+			position: absolute;
+			left: 15.55vh;
+			top:10vh;
+			visibility: hidden;
+			box-shadow: 0px 0 11vh 10vh rgba(72, 70, 70, 0.0);
+			opacity: 0;
+			transform:translateY(100%);
+			transition: opacity 0.5s ease-in-out,transform 0.3s ease-in-out,box-shadow 0.5s 0.3s ease-in-out, visibility 0.5s ease-in-out;
+		}
+		.stage{
+			width:4vh;
+			height: 0.1vh;
+			background: rgba(50,50,50,0.95);
+			position: absolute;
+			left: 13.65vh;
+			opacity: 0;
+			visibility: hidden;
+			transform:scaleX(0.1);
+			transition:transform 0.2s 0.3s ease-in-out, visibility 0.2s ease-in-out,opacity 0.1s 0.2s ease-in-out;
+		}
+		.stage#one{
+			top:10vh;
+		}
+		.stage#one-two{
+			top:11.5vh;
+		}
+		.stage#two{
+			top:13vh;
+		}
+		.stage#two-three{
+			top:14.5vh;
+		}
+		.stage#three{
+			top:16vh;
+		}
+		.stage#three-four{
+			top:17.5vh;
+		}
+		.stage#four{
+			top:19vh;
+		}
+		.stage#four-five{
+			top:20.5vh;
+		}
+		.stage#five{
+			top:22vh;
+		}
+		.stage#five-six{
+			top:23.5vh;
+		}
+		.stage#six{
+			top:25vh;
+		}
+		.stage#six-seven{
+			top:26.5vh;
+		}
+		.stage#seven{
+			top:28vh;
+		}
+		.stage#seven-eight{
+			top:29.5vh;
+		}
+		.stage#eight{
+			top:31vh;
+		}
+		.stage#eight-nine{
+			top:32.5vh;
+		}
+		.stage#nine{
+			top:34vh;
+		}
+		.date>p{
+			text-align: center;
+    		font-size: 1.2vh;
+    		color:rgba(255, 255, 255, 0.66);
+    		position: absolute;
+    		left:50%;
+    		
+    		transform:translate(-50%, -50%);
+    		font-family: sans-serif;
+    		-webkit-touch-callout: none; /* iOS Safari */
+		    -webkit-user-select: none; /* Safari */
+		    -khtml-user-select: none; /* Konqueror HTML */
+		    -moz-user-select: none; /* Firefox */
+		    -ms-user-select: none; /* Internet Explorer/Edge */
+		    user-select: none; /* Non-prefixed version, currently
+		                                  supported by Chrome and Opera */
+		}
+		#month{
+			top:15%;
+		}
+		#year{
+			top:38%;
+			font-size:1.5vh
+		}
+		
+
+
+	</style>
+	<body>
+		<div class="title">GALLERY</div>
+		<div id="back" class="container"></div>
+		<div class="container main">
+			
+			
+			<div id="area" class="container-screen">
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+				<div id="one" class="left sm"></div>
+				<div id="two" class="right lg"></div>
+				<div id="three" class="left sm"></div>
+				<div id="four" class="right lg"></div>
+				<div id="five" class="left sm"></div>
+				<div id="six" class="right lg"></div>
+				<div id="seven" class="left sm"></div>
+				<div id="eight" class="right lg"></div>
+				<div id="nine" class="left sm"></div>
+				<div id="ten" class="right lg"></div>
+			
+			</div>
+			<div class="timeline"></div>
+			<div id="one" class="stage"></div>
+			<div id="one-two" class="stage"></div>
+			<div id="two" class="stage"></div>
+			<div id="two-three" class="stage"></div>
+			<div id="three" class="stage"></div>
+			<div id="three-four" class="stage"></div>
+			<div id="four" class="stage"></div>
+			<div id="four-five" class="stage"></div>
+			<div id="five" class="stage"></div>
+			<div id="five-six" class="stage"></div>
+			<div id="six" class="stage"></div>
+			<div id="six-seven" class="stage"></div>
+			<div id="seven" class="stage"></div>
+			<div id="seven-eight" class="stage"></div>
+			<div id="eight" class="stage"></div>
+			<div id="eight-nine" class="stage"></div>
+			<div id="nine" class="stage"></div>
+			
+			<div class="date">
+				<p id="month">July</p><p id="year">2017</p>
+			</div>
+			
+			<div id="head" class="container-screen"></div>
+			<div id="base" class="container-screen"></div>	
+			
+					
+		</div></body>
+		<script>
+			var i=0,j=0;;
+			var MousePos = { x: -1, y: -1 };
+			var areaheight;
+			$(document).ready(function(){
+    			areaheight=$('#area').children().length/2*0.09*$(window).height();
+
+    			$("#base").click(1000,function(){
+				    $("#fb").css({'transform':'translate(-50%,-50%) scaleY(0.01) scaleX(0.05)','opacity':'0','border-radius':'50% 50% 50% 50%'});
+				    $("#head").css({'opacity':'0'});
+				    $("#base").css({'opacity':'0'});
+				});
+    			
+    			$('.date').hover(function(){
+    				i=1;
+    				//$('.timeline').css({'visibility':'visible','transform':'translateY(0%)','opacity':'1','box-shadow': '0px 0 11vh 10vh rgba(72, 70, 70, 0.37)'});
+    			},function(){
+    				i=0;
+    				//$('.timeline').css({'visibility':'hidden','transform':'translateY(100%)','opacity':'0','box-shadow': '0px 0 11vh 10vh rgba(72, 70, 70, 0.0)'});
+    			});
+
+    			$('.date').on('click',function(){
+    				
+    				if(j==0){
+    					j=1;
+    					$('.timeline').css({'visibility':'visible','transform':'translateY(0%)','opacity':'1','box-shadow': '0px 0 11vh 10vh rgba(72, 70, 70, 0.37)'});
+    					$('.stage#one').css({'visibility':'visible','transform':'scaleX(1)','opacity':'1'});
+    					$('.stage#one-two').css({'visibility':'visible','transform':'scaleX(0.3)','opacity':'1'});
+    					$('.stage#two').css({'visibility':'visible','transform':'scaleX(0.5)','opacity':'1'});
+    					$('.stage#two-three').css({'visibility':'visible','transform':'scaleX(0.3)','opacity':'1'});
+    					$('.stage#three').css({'visibility':'visible','transform':'scaleX(1)','opacity':'1'});
+    					$('.stage#three-four').css({'visibility':'visible','transform':'scaleX(0.3)','opacity':'1'});
+    					$('.stage#four').css({'visibility':'visible','transform':'scaleX(0.5)','opacity':'1'});
+    					$('.stage#four-five').css({'visibility':'visible','transform':'scaleX(0.3)','opacity':'1'});
+    					$('.stage#five').css({'visibility':'visible','transform':'scaleX(1)','opacity':'1'});
+    					$('.stage#five-six').css({'visibility':'visible','transform':'scaleX(0.3)','opacity':'1'});
+    					$('.stage#six').css({'visibility':'visible','transform':'scaleX(0.5)','opacity':'1'});
+    					$('.stage#six-seven').css({'visibility':'visible','transform':'scaleX(0.3)','opacity':'1'});
+    					$('.stage#seven').css({'visibility':'visible','transform':'scaleX(1)','opacity':'1'});
+    					$('.stage#seven-eight').css({'visibility':'visible','transform':'scaleX(0.3)','opacity':'1'});
+    					$('.stage#eight').css({'visibility':'visible','transform':'scaleX(0.5)','opacity':'1'});
+    					$('.stage#eight-nine').css({'visibility':'visible','transform':'scaleX(0.3)','opacity':'1'});
+    					$('.stage#nine').css({'visibility':'visible','transform':'scaleX(1)','opacity':'1'});
+    				}
+    				else{
+    					j=0;
+    					$('.timeline').css({'visibility':'hidden','transform':'translateY(100%)','opacity':'0','box-shadow': '0px 0 11vh 10vh rgba(72, 70, 70, 0.0)'});
+    					$('.stage#one').css({'visibility':'hidden','transform':'scaleX(0.1)','opacity':'0'});
+    					$('.stage#one-two').css({'visibility':'hidden','transform':'scaleX(0.1)','opacity':'0'});
+    					$('.stage#two').css({'visibility':'hidden','transform':'scaleX(0.1)','opacity':'0'});
+    					$('.stage#two-three').css({'visibility':'hidden','transform':'scaleX(0.1)','opacity':'0'});
+    					$('.stage#three').css({'visibility':'hidden','transform':'scaleX(0.1)','opacity':'0'});
+    					$('.stage#three-four').css({'visibility':'hidden','transform':'scaleX(0.1)','opacity':'0'});
+    					$('.stage#four').css({'visibility':'hidden','transform':'scaleX(0.1)','opacity':'0'});
+    					$('.stage#four-five').css({'visibility':'hidden','transform':'scaleX(0.1)','opacity':'0'});
+    					$('.stage#five').css({'visibility':'hidden','transform':'scaleX(0.1)','opacity':'0'});
+    					$('.stage#five-six').css({'visibility':'hidden','transform':'scaleX(0.1)','opacity':'0'});
+    					$('.stage#six').css({'visibility':'hidden','transform':'scaleX(0.1)','opacity':'0'});
+    					$('.stage#six-seven').css({'visibility':'hidden','transform':'scaleX(0.1)','opacity':'0'});
+    					$('.stage#seven').css({'visibility':'hidden','transform':'scaleX(0.1)','opacity':'0'});
+    					$('.stage#seven-eight').css({'visibility':'hidden','transform':'scaleX(0.1)','opacity':'0'});
+    					$('.stage#eight').css({'visibility':'hidden','transform':'scaleX(0.1)','opacity':'0'});
+    					$('.stage#eight-nine').css({'visibility':'hidden','transform':'scaleX(0.1)','opacity':'0'});
+    					$('.stage#nine').css({'visibility':'hidden','transform':'scaleX(0.1)','opacity':'0'});
+    				}
+
+    			})
+
+				
+
+    			
+				$('#area').on('scroll',function(){
+					$(".date").css({'visibility':'visible','opacity':'1'});
+					
+						resetTimer();
+				});
+
+				$('.container.main').mousemove(function(event) {
+		        MousePos.x = event.pageX;
+		        MousePos.y = event.pageY;
+
+		        if(j==1 && MousePos.y>$('.timeline').offset().top && MousePos.y<$('.timeline').offset().top + $('.timeline').outerHeight())
+		    	{
+		    		$(".date").css({'top':MousePos.y-$('.container.main').offset().top-$('.date').outerHeight()*0.5});
+		    			if(MousePos.y<$('.stage#one-two').offset().top && MousePos.y>$('.stage#one').offset().top)
+		    				{	$('#area').stop();
+		    					$('#area').animate({
+					        	scrollTop: $("#area").offset().top+areaheight*0.9375
+					    		}, 500);
+					    		$('#month').text("March");$('#year').text("2016");
+					    		$('.stage#one').css({'transform':'scaleX(2.5)'});
+		    					$('.stage#one-two').css({'transform':'scaleX(1.8)'});
+		    					$('.stage#two').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#two-three').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#three').css({'transform':'scaleX(1)'});
+		    					$('.stage#three-four').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#four').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#four-five').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#five').css({'transform':'scaleX(1)'});
+		    					$('.stage#five-six').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#six').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#six-seven').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#seven').css({'transform':'scaleX(1)'});
+		    					$('.stage#seven-eight').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#eight').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#eight-nine').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#nine').css({'transform':'scaleX(1)'});
+		    					
+							}
+		    			else if(MousePos.y<$('.stage#two').offset().top && MousePos.y>$('.stage#one-two').offset().top)
+		    				{	$('#area').stop();
+		    					$('#area').animate({
+					        	scrollTop: $("#area").offset().top+areaheight*0.875
+					    		}, 500);
+					    		$('#month').text("May");$('#year').text("2016");
+					    		$('.stage#one').css({'transform':'scaleX(1)'});
+		    					$('.stage#one-two').css({'transform':'scaleX(1.8)'});
+		    					$('.stage#two').css({'transform':'scaleX(2)'});
+		    					$('.stage#two-three').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#three').css({'transform':'scaleX(1)'});
+		    					$('.stage#three-four').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#four').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#four-five').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#five').css({'transform':'scaleX(1)'});
+		    					$('.stage#five-six').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#six').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#six-seven').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#seven').css({'transform':'scaleX(1)'});
+		    					$('.stage#seven-eight').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#eight').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#eight-nine').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#nine').css({'transform':'scaleX(1)'});
+		    					
+							}
+						else if(MousePos.y<$('.stage#two-three').offset().top && MousePos.y>$('.stage#two').offset().top)
+		    				{	$('#area').stop();
+		    					$('#area').animate({
+					        	scrollTop: $("#area").offset().top+areaheight*0.8125
+					    		}, 500);
+		    					$('#month').text("Jul");$('#year').text("2016");
+		    					$('.stage#one').css({'transform':'scaleX(1)'});
+		    					$('.stage#one-two').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#two').css({'transform':'scaleX(0.2)'});
+		    					$('.stage#two-three').css({'transform':'scaleX(1.8)'});
+		    					$('.stage#three').css({'transform':'scaleX(1)'});
+		    					$('.stage#three-four').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#four').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#four-five').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#five').css({'transform':'scaleX(1)'});
+		    					$('.stage#five-six').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#six').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#six-seven').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#seven').css({'transform':'scaleX(1)'});
+		    					$('.stage#seven-eight').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#eight').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#eight-nine').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#nine').css({'transform':'scaleX(1)'});
+							}
+						else if(MousePos.y<$('.stage#three').offset().top && MousePos.y>$('.stage#two-three').offset().top)
+		    				{	$('#area').stop();
+		    					$('#area').animate({
+					        	scrollTop: $("#area").offset().top+areaheight*0.75
+					    		}, 500);
+		    					$('#month').text("Sep");$('#year').text("2016");
+		    					$('.stage#one').css({'transform':'scaleX(1)'});
+		    					$('.stage#one-two').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#two').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#two-three').css({'transform':'scaleX(1.8)'});
+		    					$('.stage#three').css({'transform':'scaleX(2.5)'});
+		    					$('.stage#three-four').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#four').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#four-five').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#five').css({'transform':'scaleX(1)'});
+		    					$('.stage#five-six').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#six').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#six-seven').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#seven').css({'transform':'scaleX(1)'});
+		    					$('.stage#seven-eight').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#eight').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#eight-nine').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#nine').css({'transform':'scaleX(1)'});
+							}
+						else if(MousePos.y<$('.stage#three-four').offset().top && MousePos.y>$('.stage#three').offset().top)
+		    				{	$('#area').stop();
+		    					$('#area').animate({
+					        	scrollTop: $("#area").offset().top+areaheight*0.6875
+					    		}, 500);
+		    					$('#month').text("Nov");$('#year').text("2016");
+		    					$('.stage#one').css({'transform':'scaleX(1)'});
+		    					$('.stage#one-two').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#two').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#two-three').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#three').css({'transform':'scaleX(2.5)'});
+		    					$('.stage#three-four').css({'transform':'scaleX(1.8)'});
+		    					$('.stage#four').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#four-five').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#five').css({'transform':'scaleX(1)'});
+		    					$('.stage#five-six').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#six').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#six-seven').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#seven').css({'transform':'scaleX(1)'});
+		    					$('.stage#seven-eight').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#eight').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#eight-nine').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#nine').css({'transform':'scaleX(1)'});
+							}
+						else if(MousePos.y<$('.stage#four').offset().top && MousePos.y>$('.stage#three-four').offset().top)
+		    				{	$('#area').stop();
+		    					$('#area').animate({
+					        	scrollTop: $("#area").offset().top+areaheight*0.625
+					    		}, 500);
+		    					$('#month').text("Jan");$('#year').text("2016");
+		    					$('.stage#one').css({'transform':'scaleX(1)'});
+		    					$('.stage#one-two').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#two').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#two-three').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#three').css({'transform':'scaleX(1)'});
+		    					$('.stage#three-four').css({'transform':'scaleX(1.8)'});
+		    					$('.stage#four').css({'transform':'scaleX(2)'});
+		    					$('.stage#four-five').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#five').css({'transform':'scaleX(1)'});
+		    					$('.stage#five-six').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#six').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#six-seven').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#seven').css({'transform':'scaleX(1)'});
+		    					$('.stage#seven-eight').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#eight').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#eight-nine').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#nine').css({'transform':'scaleX(1)'});
+							}
+						else if(MousePos.y<$('.stage#four-five').offset().top && MousePos.y>$('.stage#four').offset().top)
+		    				{	$('#area').stop();
+		    					$('#area').animate({
+					        	scrollTop: $("#area").offset().top+areaheight*0.565
+					    		}, 500);
+		    					$('#month').text("March");$('#year').text("2016");
+		    					$('.stage#one').css({'transform':'scaleX(1)'});
+		    					$('.stage#one-two').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#two').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#two-three').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#three').css({'transform':'scaleX(1)'});
+		    					$('.stage#three-four').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#four').css({'transform':'scaleX(2)'});
+		    					$('.stage#four-five').css({'transform':'scaleX(1.8)'});
+		    					$('.stage#five').css({'transform':'scaleX(1)'});
+		    					$('.stage#five-six').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#six').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#six-seven').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#seven').css({'transform':'scaleX(1)'});
+		    					$('.stage#seven-eight').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#eight').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#eight-nine').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#nine').css({'transform':'scaleX(1)'});
+							}
+						else if(MousePos.y<$('.stage#five').offset().top && MousePos.y>$('.stage#four-five').offset().top)
+		    				{	$('#area').stop();
+		    					$('#area').animate({
+					        	scrollTop: $("#area").offset().top+areaheight*0.5
+					    		}, 500);
+		    					$('#month').text("May");$('#year').text("2016");
+		    					$('.stage#one').css({'transform':'scaleX(1)'});
+		    					$('.stage#one-two').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#two').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#two-three').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#three').css({'transform':'scaleX(1)'});
+		    					$('.stage#three-four').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#four').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#four-five').css({'transform':'scaleX(1.8)'});
+		    					$('.stage#five').css({'transform':'scaleX(2.5)'});
+		    					$('.stage#five-six').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#six').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#six-seven').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#seven').css({'transform':'scaleX(1)'});
+		    					$('.stage#seven-eight').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#eight').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#eight-nine').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#nine').css({'transform':'scaleX(1)'});
+							}
+						else if(MousePos.y<$('.stage#five-six').offset().top && MousePos.y>$('.stage#five').offset().top)
+		    				{	$('#area').stop();
+		    					$('#area').animate({
+					        	scrollTop: $("#area").offset().top+areaheight*0.4375
+					    		}, 500);
+		    					$('#month').text("July");$('#year').text("2016");
+		    					$('.stage#one').css({'transform':'scaleX(1)'});
+		    					$('.stage#one-two').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#two').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#two-three').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#three').css({'transform':'scaleX(1)'});
+		    					$('.stage#three-four').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#four').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#four-five').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#five').css({'transform':'scaleX(2.5)'});
+		    					$('.stage#five-six').css({'transform':'scaleX(1.8)'});
+		    					$('.stage#six').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#six-seven').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#seven').css({'transform':'scaleX(1)'});
+		    					$('.stage#seven-eight').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#eight').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#eight-nine').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#nine').css({'transform':'scaleX(1)'});
+							}
+						else if(MousePos.y<$('.stage#six').offset().top && MousePos.y>$('.stage#five-six').offset().top)
+		    				{	$('#area').stop();
+		    					$('#area').animate({
+					        	scrollTop: $("#area").offset().top+areaheight*0.375
+					    		}, 500);
+		    					$('#month').text("Sep");$('#year').text("2016");
+		    					$('.stage#one').css({'transform':'scaleX(1)'});
+		    					$('.stage#one-two').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#two').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#two-three').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#three').css({'transform':'scaleX(1)'});
+		    					$('.stage#three-four').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#four').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#four-five').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#five').css({'transform':'scaleX(1)'});
+		    					$('.stage#five-six').css({'transform':'scaleX(1.8)'});
+		    					$('.stage#six').css({'transform':'scaleX(2)'});
+		    					$('.stage#six-seven').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#seven').css({'transform':'scaleX(1)'});
+		    					$('.stage#seven-eight').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#eight').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#eight-nine').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#nine').css({'transform':'scaleX(1)'});
+							}
+						else if(MousePos.y<$('.stage#six-seven').offset().top && MousePos.y>$('.stage#six').offset().top)
+		    				{	$('#area').stop();
+		    					$('#area').animate({
+					        	scrollTop: $("#area").offset().top+areaheight*0.3125
+					    		}, 500);
+		    					$('#month').text("Nov");$('#year').text("2016");
+		    					$('.stage#one').css({'transform':'scaleX(1)'});
+		    					$('.stage#one-two').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#two').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#two-three').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#three').css({'transform':'scaleX(1)'});
+		    					$('.stage#three-four').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#four').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#four-five').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#five').css({'transform':'scaleX(1)'});
+		    					$('.stage#five-six').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#six').css({'transform':'scaleX(2)'});
+		    					$('.stage#six-seven').css({'transform':'scaleX(1.8)'});
+		    					$('.stage#seven').css({'transform':'scaleX(1)'});
+		    					$('.stage#seven-eight').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#eight').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#eight-nine').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#nine').css({'transform':'scaleX(1)'});
+							}
+						else if(MousePos.y<$('.stage#seven').offset().top && MousePos.y>$('.stage#six-seven').offset().top)
+		    				{	$('#area').stop();
+		    					$('#area').animate({
+					        	scrollTop: $("#area").offset().top+areaheight*0.25
+					    		}, 500);
+		    					$('#month').text("Jan");$('#year').text("2017");
+		    					$('.stage#one').css({'transform':'scaleX(1)'});
+		    					$('.stage#one-two').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#two').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#two-three').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#three').css({'transform':'scaleX(1)'});
+		    					$('.stage#three-four').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#four').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#four-five').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#five').css({'transform':'scaleX(1)'});
+		    					$('.stage#five-six').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#six').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#six-seven').css({'transform':'scaleX(1.8)'});
+		    					$('.stage#seven').css({'transform':'scaleX(2.5)'});
+		    					$('.stage#seven-eight').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#eight').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#eight-nine').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#nine').css({'transform':'scaleX(1)'});
+							}
+						else if(MousePos.y<$('.stage#seven-eight').offset().top && MousePos.y>$('.stage#seven').offset().top)
+		    				{	$('#area').stop();
+		    					$('#area').animate({
+					        	scrollTop: $("#area").offset().top+areaheight*0.1875
+					    		}, 500);
+		    					$('#month').text("March");$('#year').text("2017");
+		    					$('.stage#one').css({'transform':'scaleX(1)'});
+		    					$('.stage#one-two').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#two').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#two-three').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#three').css({'transform':'scaleX(1)'});
+		    					$('.stage#three-four').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#four').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#four-five').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#five').css({'transform':'scaleX(1)'});
+		    					$('.stage#five-six').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#six').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#six-seven').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#seven').css({'transform':'scaleX(2.5)'});
+		    					$('.stage#seven-eight').css({'transform':'scaleX(1.8)'});
+		    					$('.stage#eight').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#eight-nine').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#nine').css({'transform':'scaleX(1)'});
+							}
+						else if(MousePos.y<$('.stage#eight').offset().top && MousePos.y>$('.stage#seven-eight').offset().top)
+		    				{	$('#area').stop();
+		    					$('#area').animate({
+					        	scrollTop: $("#area").offset().top+areaheight*0.125
+					    		}, 500);
+		    					$('#month').text("May");$('#year').text("2017");
+		    					$('.stage#one').css({'transform':'scaleX(1)'});
+		    					$('.stage#one-two').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#two').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#two-three').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#three').css({'transform':'scaleX(1)'});
+		    					$('.stage#three-four').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#four').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#four-five').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#five').css({'transform':'scaleX(1)'});
+		    					$('.stage#five-six').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#six').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#six-seven').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#seven').css({'transform':'scaleX(1)'});
+		    					$('.stage#seven-eight').css({'transform':'scaleX(1.8)'});
+		    					$('.stage#eight').css({'transform':'scaleX(2)'});
+		    					$('.stage#eight-nine').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#nine').css({'transform':'scaleX(1)'});
+							}
+						else if(MousePos.y<$('.stage#eight-nine').offset().top && MousePos.y>$('.stage#eight').offset().top)
+		    				{	$('#area').stop();
+		    					$('#area').animate({
+					        	scrollTop: $("#area").offset().top+areaheight*0.625
+					    		}, 500);
+		    					$('#month').text("July");$('#year').text("2017");
+		    					$('.stage#one').css({'transform':'scaleX(1)'});
+		    					$('.stage#one-two').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#two').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#two-three').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#three').css({'transform':'scaleX(1)'});
+		    					$('.stage#three-four').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#four').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#four-five').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#five').css({'transform':'scaleX(1)'});
+		    					$('.stage#five-six').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#six').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#six-seven').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#seven').css({'transform':'scaleX(1)'});
+		    					$('.stage#seven-eight').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#eight').css({'transform':'scaleX(2)'});
+		    					$('.stage#eight-nine').css({'transform':'scaleX(1.8)'});
+		    					$('.stage#nine').css({'transform':'scaleX(1)'});
+							}	
+						else if(MousePos.y<$('.stage#nine').offset().top && MousePos.y>$('.stage#eight-nine').offset().top)
+		    				{	$('#area').stop();
+		    					$('#area').animate({
+					        	scrollTop: $("#area").offset().top+areaheight*0.0
+					    		}, 500);
+		    					$('#month').text("Sept");$('#year').text("2017");
+		    					$('.stage#one').css({'transform':'scaleX(1)'});
+		    					$('.stage#one-two').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#two').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#two-three').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#three').css({'transform':'scaleX(1)'});
+		    					$('.stage#three-four').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#four').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#four-five').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#five').css({'transform':'scaleX(1)'});
+		    					$('.stage#five-six').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#six').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#six-seven').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#seven').css({'transform':'scaleX(1)'});
+		    					$('.stage#seven-eight').css({'transform':'scaleX(0.3)'});
+		    					$('.stage#eight').css({'transform':'scaleX(0.5)'});
+		    					$('.stage#eight-nine').css({'transform':'scaleX(1.8)'});
+		    					$('.stage#nine').css({'transform':'scaleX(2.5)'});
+							}									
+		    		
+		    	}else{
+		    		
+		    	}
+
+
+		    	});
+
+
+		    	
+			});
+
+				function resetTimer(){
+    				
+    				clearTimeout(window.timer);
+					if(j!=1 )
+						{window.timer= setTimeout(timerFired, 2000);}
+    			};
+
+
+		
+    			window.timerFired = function() {
+				    if(j!=1 )
+				    {
+				    $(".date").css({'visibility':'hidden','opacity':'0'});
+				    window.myTimer = setTimeout(timerFired, 2000);
+					}
+				};
+
+
+			
+
+
+
+
+
+
+
+		</script>
+	</body>
+</html>

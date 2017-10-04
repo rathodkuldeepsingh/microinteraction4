@@ -8,7 +8,7 @@
 		
 		
 		<!--<script src="js/jquery.longclick.js"></script>-->
-		<script src="JS/jquery-ui.min.js"></script>
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 		<link href="https://fonts.googleapis.com/css?family=Raleway:200" rel="stylesheet">
 	</head>
 	<style>
@@ -70,6 +70,14 @@
 			left:50%;
 			top: 10vh;
 			font-size: 3vh;
+			transform:translate(-50%,-50%);
+			font-family: 'Raleway', sans-serif;
+		}
+		.info{
+			position: absolute;
+			left:50%;
+			top: 85vh;
+			font-size: 2vh;
 			transform:translate(-50%,-50%);
 			font-family: 'Raleway', sans-serif;
 		}
@@ -239,12 +247,33 @@
 			top:38%;
 			font-size:1.5vh
 		}
+		.b, .f{
+			height:8vh;
+			width:6vh;
+			
+			position: fixed;
+			top:40vh;
+		}
+		.b{	left: 5vh;
+			background: url("back.png") no-repeat center;
+			background-size: contain;
+
+		}
+		.f{
+			background: url("forward.png") no-repeat center;
+			background-size: contain;
+			right: 5vh;
+		}
+
 		
 
 
 	</style>
 	<body>
 		<div class="title">GALLERY</div>
+		<div class="info">Bring the cursor on mobile screen ans scroll.</div>
+		<a href="https://rathodkuldeepsingh.github.io/microinteraction2/"><div class="b"></div></a>
+		<a href="https://rathodkuldeepsingh.github.io/microinteraction3/"><div class="f"></div></a>
 		<div id="back" class="container"></div>
 		<div class="container main">
 			
@@ -2559,7 +2588,8 @@
 			<div id="base" class="container-screen"></div>	
 			
 					
-		</div></body>
+		</div>
+		</body>
 		<script>
 			var i=0,j=0;;
 			var MousePos = { x: -1, y: -1 };
@@ -2582,7 +2612,7 @@
     			});
 
     			$('.date').on('click',function(){
-    				
+    				$('.info').text('');
     				if(j==0){
     					j=1;
     					$('.timeline').css({'visibility':'visible','transform':'translateY(0%)','opacity':'1','box-shadow': '0px 0 11vh 10vh rgba(72, 70, 70, 0.37)'});
@@ -2633,7 +2663,9 @@
     			
 				$('#area').on('scroll',function(){
 					$(".date").css({'visibility':'visible','opacity':'1'});
-					
+					if(j==0)
+						{$(".info").text("Click on the month indicator to go to a specific month.");
+						}
 						resetTimer();
 				});
 
